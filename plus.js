@@ -138,7 +138,11 @@ function editProject(after){const P=px(),goal=(S.profile&&S.profile.goal)||"work
  $("#pjOk").onclick=()=>{S.profile=S.profile||{goal:"work",lvl:"new",mins:15,name:""};S.profile.project=$("#pjIn").value.trim();save();close();after&&after()}}
 
 /* ---------- опросник ---------- */
-function onboarding(){const o=t().ob,P=px(),first=!S.profile;
+function pickLang(then){const s=sheet(`<div class="hd"><span class="eyebrow">Claude Skill Hill</span></div><h3>Выберите язык<br><span style="color:var(--muted)">Choose your language</span></h3>
+  <div class="choices" style="margin-top:6px"><button class="choice" data-l="ru"><b>Русский</b><span>курс на русском</span></button><button class="choice" data-l="en"><b>English</b><span>the course in English</span></button></div>`);
+ s.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{S.lang=b.dataset.l;S.langPicked=true;save();applyLang();then()})}
+function onboarding(){if(!S.profile&&!S.langPicked){pickLang(onboarding);return}
+ const o=t().ob,P=px(),first=!S.profile;
  const st={goal:"work",field:"other",lvl:"new",mins:15,name:"",project:"",...(S.profile||{})};
  const order=["goal","field","lvl","mins","proj","name"];let i=0;
  const opts={goal:o.goals,field:P.fields,lvl:[...o.lvls,["test",...P.testOpt]],mins:o.minsL};
