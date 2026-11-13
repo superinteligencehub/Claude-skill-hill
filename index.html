@@ -168,6 +168,22 @@ a.btn{display:inline-block}
 .chk .ok{color:var(--good);font-weight:700}.chk .no{color:var(--bad);font-weight:700}
 .chk small{display:block;color:var(--muted)}
 .meter{height:10px;border-radius:999px;background:var(--line);overflow:hidden}.meter i{display:block;height:100%;background:var(--done)}
+.ideas{display:flex;gap:6px;flex-wrap:wrap}
+.workbox{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px;margin-top:8px}
+.stages{display:flex;gap:4px;flex-wrap:wrap}
+.stages span{font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.stages span.on{background:var(--done-soft);border-color:var(--done);color:var(--ink)}
+.proj{display:flex;flex-direction:column;gap:8px}
+.planchart{display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.planchart svg{width:100%;height:auto;display:block;font-family:var(--body)}
+.prow{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0;font-size:14.5px}
+.prow dt{color:var(--muted)}.prow dd{margin:0;font-weight:600;min-width:0;overflow-wrap:anywhere}
+.gets{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.gets div{border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:2px;background:var(--bg)}
+.gets i{font:700 20px var(--display);font-style:normal;color:var(--accent)}
+.gets b{font-size:15px}.gets span{font-size:13px;color:var(--muted)}
+.excerpt{font-size:14px;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}
+a.copy{margin-top:0}
 </style>
 </head>
 <body>
@@ -201,6 +217,7 @@ a.btn{display:inline-block}
       <button class="btn" id="nextB"></button>
     </div>
     <div class="card daily" id="daily"></div>
+    <div class="card proj" id="proj" hidden></div>
     <button class="card fourd" id="fourD"></button>
     <main id="list" style="display:flex;flex-direction:column;gap:22px"></main>
   </section>
@@ -235,6 +252,7 @@ a.btn{display:inline-block}
       <div class="card form"><textarea id="evIn" style="min-height:140px"></textarea><div><button class="btn" id="evGo"></button></div></div>
       <div id="evOut"></div>
     </div>
+    <div id="pr-spot" hidden style="display:flex;flex-direction:column;gap:16px"></div>
   </section>
 
   <!-- PROFILE -->
@@ -242,6 +260,7 @@ a.btn{display:inline-block}
     <div><h2 class="v" id="meH"></h2><p class="lead" id="meP"></p></div>
     <div class="stats" id="stats"></div>
     <div><div class="eyebrow" id="badH" style="margin-bottom:8px"></div><div class="badges" id="badges"></div></div>
+    <div class="card" id="folio" style="display:flex;flex-direction:column;gap:12px"></div>
     <div class="card" style="display:flex;flex-direction:column;gap:12px">
       <div class="eyebrow" id="certH"></div><div class="levels" id="certLv"></div>
       <canvas id="cert" width="1200" height="840"></canvas>
@@ -278,6 +297,8 @@ a.btn{display:inline-block}
 <script src="updates.js"></script>
 <script src="game.js"></script>
 <script src="tracks.js"></script>
+<script src="spot.js"></script>
+<script src="qr.js"></script>
 <script>
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -412,7 +433,7 @@ function renderDaily(){const tt=t(),dd=tt.day,o=dayPick(),box=$("#daily");if(!o)
  box.innerHTML=`<div class="hd"><span class="eyebrow">${dd.h}</span><span class="time">⏱ ${tt.min(Math.max(5,o.x.tasks.length*3))}</span></div>
  <h3>${esc(o.x.tasks[0])}</h3><p style="margin:0;color:var(--muted);font-size:14px">${esc(dd.from(o.x.t))}</p>
  <div class="prompt">${esc(o.x.prompt)}</div>
- <div class="row2"><button class="copy" id="dCopy" style="margin:0">${tt.copy}</button><button class="copy" id="dOpen" style="margin:0">${dd.open}</button></div>
+ <div class="row2"><button class="copy" id="dCopy" style="margin:0">${tt.copy}</button><button class="copy" id="dOpen" style="margin:0">${dd.open}</button>${claudeLink(projPrompt(o.x.prompt))}</div>
  ${ok?`<p style="margin:0;font-weight:600">${dd.done}</p>`:`<div><button class="btn ok" id="dDone">${dd.go}</button></div>`}`;
  copyBtn($("#dCopy"),o.x.prompt,box.querySelector(".prompt"));
  $("#dOpen").onclick=()=>{lv=o.li;renderPath();openStep(o.i,"practice")};
@@ -425,7 +446,7 @@ function renderPath(){
  const tot=Lv.steps.length||30,n=Lv.steps.filter((_,i)=>S.done.includes(sid(Lv.id,i))).length;
  $("#cnt").textContent=n;$("#ofTot").textContent=tt.of(tot);$("#rank").textContent=tt.ranks[rankIdx()];
  const f=n/tot;path.style.strokeDashoffset=LEN*(1-f);const pt=path.getPointAtLength(LEN*f);$("#me").setAttribute("cx",pt.x);$("#me").setAttribute("cy",pt.y);
- renderDaily();render4D();const m=$("#list");m.innerHTML="";
+ renderDaily();renderProj();render4D();const m=$("#list");m.innerHTML="";
  if(Lv.soon){m.innerHTML=`<div class="card soon"><h3>${esc(Lv.name)}</h3><p style="margin:0">${esc(Lv.sub)}. ${tt.soonTxt}</p></div>`;$("#nextBox").hidden=true;return}
  const rec=p&&Lv.id==="base"?GOAL_STEPS[p.goal]||[]:[];
  Lv.sections.forEach((s,si)=>{
@@ -454,19 +475,21 @@ const TK=["theory","example","practice","mistakes","quiz","more"];
 function openStep(i,tab="theory"){
  const tt=t(),Lv=L()[lv],x=Lv.steps[i],k=sid(Lv.id,i),d=S.done.includes(k);
  const s=sheet(`<div class="hd"><span class="eyebrow">${esc(tt.stepOf(i+1,Lv.steps.length,Lv.sections[x.s].name))}</span><button class="x" aria-label="×">×</button></div>
- <h3>${esc(x.t)}</h3><div class="time" style="margin:-6px 0 10px">⏱ ${tt.min(stepMin(x))}</div><div class="tabs" role="tablist">${TK.map((q,j)=>`<button class="tab" role="tab" data-k="${q}">${tt.tabs[j]}</button>`).join("")}</div>
+ <h3>${esc(x.t)}</h3><div class="row2" style="margin:-6px 0 10px;gap:14px"><span class="time">⏱ ${tt.min(stepMin(x))}</span>${ttsOk()?`<button class="copy" id="tts" style="margin:0">${tt.px.listen}</button>`:""}</div><div class="tabs" role="tablist">${TK.map((q,j)=>`<button class="tab" role="tab" data-k="${q}">${tt.tabs[j]}</button>`).join("")}</div>
  <div class="pane" id="pane"></div>
  <div class="actions">${d?`<button class="btn ghost" data-a="undo">${tt.undo}</button>`:`<button class="btn ok" data-a="done">${tt.doneB}</button>`}${i<Lv.steps.length-1?`<button class="btn ghost" data-a="next">${tt.nextS(i+2)}</button>`:""}</div>`);
  const pane=s.querySelector("#pane");
- const show=q=>{$$(".tab").forEach(z=>z.setAttribute("aria-selected",z.dataset.k===q));
+ let said="";const show=q=>{ttsStop();s.querySelectorAll(".tab").forEach(z=>z.setAttribute("aria-selected",z.dataset.k===q));
+  said=({theory:x.theory,more:x.more,example:tt.weak+". "+x.bad+". "+tt.strong+". "+x.good,practice:x.tasks.join(". ")+". "+x.prompt,mistakes:x.mistakes.join(". "),quiz:x.quiz[0]+" "+x.quiz[1].join(". ")})[q];
   if(q==="theory"||q==="more")pane.innerHTML=`<p>${esc(q==="theory"?x.theory:x.more)}</p>`;
   if(q==="example")pane.innerHTML=`<div class="cmp"><div class="b"><span>${tt.weak}</span><p style="margin:0">${esc(x.bad)}</p></div><div class="g"><span>${tt.strong}</span><p style="margin:0">${esc(x.good)}</p></div></div>`;
-  if(q==="practice"){pane.innerHTML=`<ul>${x.tasks.map(z=>`<li>${esc(z)}</li>`).join("")}</ul><div class="prompt" style="margin-top:14px">${esc(x.prompt)}</div><button class="copy">${tt.copy}</button>`;copyBtn(pane.querySelector(".copy"),x.prompt,pane.querySelector(".prompt"))}
+  if(q==="practice"){pane.innerHTML=`<ul>${x.tasks.map(z=>`<li>${esc(z)}</li>`).join("")}</ul><div class="prompt" style="margin-top:14px">${esc(x.prompt)}</div><button class="copy">${tt.copy}</button>`;copyBtn(pane.querySelector(".copy"),x.prompt,pane.querySelector(".prompt"));plusPractice(pane,x,k)}
   if(q==="mistakes")pane.innerHTML=`<ul>${x.mistakes.map(z=>`<li>${esc(z)}</li>`).join("")}</ul>`;
   if(q==="quiz"){const[qq,o,a]=x.quiz;pane.innerHTML=`<p class="q">${esc(qq)}</p>${o.map((z,j)=>`<button class="opt" data-j="${j}">${esc(z)}</button>`).join("")}<p id="res" style="font-weight:600"></p>`;
    let tried=false;pane.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const j=+b.dataset.j;pane.querySelectorAll(".opt").forEach(z=>z.classList.remove("right","wrong"));b.classList.add(j===a?"right":"wrong");
     if(j===a){const first=!tried&&!S.quiz.includes(k);pane.querySelector("#res").textContent=first?tt.right:tt.rightAgain;if(first){S.quiz.push(k);addXP(20)}}else{tried=true;pane.querySelector("#res").textContent=tt.wrong}})}};
  s.querySelectorAll(".tab").forEach(z=>z.onclick=()=>show(z.dataset.k));show(tab);
+ if(s.querySelector("#tts"))s.querySelector("#tts").onclick=e=>ttsToggle(e.currentTarget,x.t+". "+said);
  s.querySelector(".x").onclick=close;
  s.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const a=b.dataset.a;
   if(a==="done"){S.done.push(k);addXP(50);renderPath();i<Lv.steps.length-1?openStep(i+1):close()}
@@ -481,17 +504,17 @@ function renderLib(){const tt=t(),Ls=L().filter(x=>x.steps.length);$("#libH").te
  Ls.forEach((Lv,li)=>Lv.steps.forEach((x,i)=>{if((sel===""||sel===li+":"+x.s)&&(!q||(x.t+" "+x.prompt+" "+x.good).toLowerCase().includes(q)))items.push({Lv,x,i})}));
  window._lib=items;
  $("#libList").innerHTML=items.length?items.map(({Lv,x,i},k)=>`<div class="card"><h4><span>${esc(x.t)}</span><small>${Lv.n}.${i+1} · ${esc(Lv.sections[x.s].name)}</small></h4>
-  <div class="eyebrow" style="margin-bottom:6px">${tt.ready}</div><div class="prompt">${esc(x.prompt)}</div><button class="copy" data-c="p${k}">${tt.copy}</button>
+  <div class="eyebrow" style="margin-bottom:6px">${tt.ready}</div><div class="prompt">${esc(x.prompt)}</div><div class="row2"><button class="copy" data-c="p${k}" style="margin:0">${tt.copy}</button>${claudeLink(projPrompt(x.prompt))}</div>
   <div class="eyebrow" style="margin:12px 0 6px">${tt.ex}</div><div class="prompt">${esc(x.good)}</div><button class="copy" data-c="g${k}">${tt.copy}</button></div>`).join(""):`<p class="lead">${tt.empty}</p>`;
- $$("#libList .copy").forEach(b=>{const it=items[+b.dataset.c.slice(1)].x,txt=b.dataset.c[0]==="p"?it.prompt:it.good;copyBtn(b,txt,b.previousElementSibling)})}
+ $$("#libList button.copy").forEach(b=>{const it=items[+b.dataset.c.slice(1)].x,txt=b.dataset.c[0]==="p"?it.prompt:it.good;copyBtn(b,txt,b.dataset.c[0]==="p"?b.parentElement.previousElementSibling:b.previousElementSibling)})}
 $("#q").oninput=renderLib;$("#qs").onchange=renderLib;
 
 /* ---------- builder ---------- */
 let prTab=0;
 function renderPractice(){const tt=t();$("#prSeg").innerHTML=tt.pr.map((v,i)=>`<button class="lv" role="tab" aria-pressed="${i===prTab}" data-i="${i}">${v}</button>`).join("");
  $$("#prSeg .lv").forEach(b=>b.onclick=()=>{prTab=+b.dataset.i;renderPractice()});
- $("#pr-build").hidden=prTab!==0;$("#pr-game").hidden=prTab!==1;$("#pr-eval").hidden=prTab!==2;
- if(prTab===0)renderBuild();if(prTab===1)renderGame();if(prTab===2)renderEval()}
+ $("#pr-build").hidden=prTab!==0;$("#pr-game").hidden=prTab!==1;$("#pr-eval").hidden=prTab!==2;$("#pr-spot").hidden=prTab!==3;
+ if(prTab===0)renderBuild();if(prTab===1)renderGame();if(prTab===2)renderEval();if(prTab===3)renderSpot()}
 /* game */
 let gIdx=null;
 function renderGame(){const tt=t(),g=tt.game,R=S.lang==="en"?window.GAME_EN:window.GAME_RU;S.game=S.game||[];
@@ -565,11 +588,11 @@ function renderMe(){const tt=t(),Ls=L(),d=S.done.filter(x=>x.startsWith("base:")
  $("#certLv").innerHTML=Ls.map((Lv,i)=>`<button class="lv" aria-pressed="${i===certLv}" data-i="${i}">${Lv.kind==="track"?"★":Lv.n+"."} ${esc(Lv.name)}${lvDone(Lv)>=Lv.steps.length&&Lv.steps.length?" ✓":""}</button>`).join("");
  $$("#certLv .lv").forEach(b=>b.onclick=()=>{certLv=+b.dataset.i;renderMe()});
  const Lv=Ls[certLv],dn=lvDone(Lv),tot=Lv.steps.length,ok=tot>0&&dn>=tot;
- drawCert(ok,Lv);$("#certNote").textContent=ok?tt.certOk:tt.certLock(tot-dn,Lv.name);$("#certDl").textContent=tt.dl;$("#certSh").textContent=tt.share;
+ renderFolio();drawCert(ok,Lv);$("#certNote").textContent=ok?tt.certOk:tt.certLock(tot-dn,Lv.name);$("#certDl").textContent=tt.dl;$("#certSh").textContent=tt.share;
  $("#certDl").disabled=$("#certSh").disabled=!ok;$("#certSh").hidden=!navigator.share;
  const cd=S.certDates&&S.certDates[Lv.id]?new Date(S.certDates[Lv.id]):new Date();
  $("#certLi").textContent=tt.li;$("#certLi").hidden=!ok;
- $("#certLi").href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name="+encodeURIComponent("Claude Skill Hill — "+(Lv.kind==="track"?t().trk.li:(S.lang==="en"?"Level ":"Уровень ")+Lv.n)+": "+Lv.name)+"&organizationName="+encodeURIComponent("Claude Skill Hill")+"&issueYear="+cd.getFullYear()+"&issueMonth="+(cd.getMonth()+1)+"&certUrl="+encodeURIComponent("https://digitalcreatorhub.github.io/Claude-skill-hill/");
+ $("#certLi").href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name="+encodeURIComponent("Claude Skill Hill — "+(Lv.kind==="track"?t().trk.li:(S.lang==="en"?"Level ":"Уровень ")+Lv.n)+": "+Lv.name)+"&organizationName="+encodeURIComponent("Claude Skill Hill")+"&issueYear="+cd.getFullYear()+"&issueMonth="+(cd.getMonth()+1)+"&certUrl="+encodeURIComponent(proofLink(1));
  $("#nextH").textContent=tt.nextH;$("#nextP").textContent=tt.nextP;$("#nextA").textContent=tt.nextA;
  $("#upH").textContent=tt.upH;const U=(window.UPDATES||[]).slice(0,6);
  $("#upList").innerHTML=U.map(u=>`<div><div style="font-size:13px;color:var(--muted)">${new Date(u.date).toLocaleDateString(S.lang==="en"?"en-GB":"ru-RU",{day:"numeric",month:"long",year:"numeric"})}</div><div>${esc(u[S.lang]||u.ru)}</div></div>`).join("");
@@ -630,29 +653,18 @@ async function drawCert(ok,Lv){const c=$("#cert"),x=c.getContext("2d"),tt=t().ce
  x.fillStyle="#AEB6E0";x.font="400 18px 'Golos Text', sans-serif";x.fillText(tt.sign,950,718);
  // number
  x.fillStyle="rgba(174,182,224,.7)";x.font="400 15px 'JetBrains Mono', monospace";x.fillText("№ "+num,W/2,774);x.fillStyle="rgba(174,182,224,.55)";x.font="400 14px 'Golos Text', sans-serif";x.fillText(tt.disc,W/2,794);
+ drawQR(x,ok);
  if(!ok){x.save();x.translate(W/2,H/2);x.rotate(-.35);x.fillStyle="rgba(255,255,255,.13)";x.font="700 150px Unbounded, sans-serif";x.fillText(tt.sample,0,50);x.restore()}}
 function certBlob(){return new Promise(r=>$("#cert").toBlob(r,"image/png"))}
 $("#certDl").onclick=async()=>{const b=await certBlob(),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="claude-skill-hill-certificate.png";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000)};
 $("#certSh").onclick=async()=>{try{const b=await certBlob(),f=new File([b],"claude-skill-hill.png",{type:"image/png"});
- await navigator.share({files:[f],title:"Claude Skill Hill",text:location.href})}catch(e){}};
+ await navigator.share({files:[f],title:"Claude Skill Hill",text:proofLink(1)})}catch(e){}};
 $$("#langSeg button").forEach(b=>b.onclick=()=>{S.lang=b.dataset.l;save();applyLang();renderMe()});
-$("#redo").onclick=onboarding;
+$("#redo").onclick=()=>onboarding();
 let armed=false;$("#reset").onclick=e=>{if(!armed){armed=true;e.target.textContent=t().resetSure;setTimeout(()=>{armed=false;e.target.textContent=t().reset},3000)}
- else{S={...S,done:[],quiz:[],days:[],xp:0,built:false,badges:[]};save();armed=false;chips();renderMe()}};
+ else{S={...S,done:[],quiz:[],days:[],xp:0,built:false,badges:[],spot:[],game:[],certDates:{}};save();armed=false;chips();renderMe()}};
 
-/* ---------- onboarding ---------- */
-function onboarding(){const o=t().ob,p=S.profile||{goal:"work",lvl:"new",mins:15,name:""};const st={...p};
- const grp=(key,arr)=>`<div class="choices">${arr.map(([v,a,b])=>`<button class="choice" data-g="${key}" data-v="${v}" aria-pressed="${String(st[key])===String(v)}"><b>${a}</b><span>${b}</span></button>`).join("")}</div>`;
- const s=sheet(`<div class="hd"><span class="eyebrow">Claude Skill Hill</span>${S.profile?`<button class="x">×</button>`:""}</div><h3>${o.h}</h3><p class="lead" style="margin:-4px 0 18px">${o.p}</p>
- <div class="form"><label class="f">${o.name}<input type="text" id="obName" maxlength="40" placeholder="${o.namePh}" value="${esc(st.name||"")}"></label>
- <div class="f" style="display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:14px">${o.goal}${grp("goal",o.goals)}</div>
- <div class="f" style="display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:14px">${o.lvl}${grp("lvl",o.lvls)}</div>
- <div class="f" style="display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:14px">${o.mins}${grp("mins",o.minsL)}</div></div>
- <div class="actions"><button class="btn" id="obGo">${o.start}</button>${S.profile?"":`<button class="btn ghost" id="obSkip">${o.skip}</button>`}</div>`);
- s.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{const g=b.dataset.g;st[g]=g==="mins"?+b.dataset.v:b.dataset.v;s.querySelectorAll(`[data-g="${g}"]`).forEach(z=>z.setAttribute("aria-pressed",z===b))});
- const fin=()=>{st.name=$("#obName").value.trim();S.profile=st;save();close();go("path")};
- $("#obGo").onclick=fin;if($("#obSkip"))$("#obSkip").onclick=fin;if(s.querySelector(".x"))s.querySelector(".x").onclick=close}
-
+/* онбординг (опросник и план) — в plus.js */
 /* ---------- install ---------- */
 let deferredInstall=null;
 const isStandalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
@@ -675,9 +687,8 @@ $("#instX").onclick=()=>{try{localStorage.setItem("skillhill_inst_x","1")}catch(
 /* ---------- init ---------- */
 function applyLang(){renderInstall();document.documentElement.lang=S.lang;$$("nav.tabbar button span").forEach((e,i)=>e.textContent=t().nav[i]);
  ({path:renderPath,lib:renderLib,build:renderPractice,me:renderMe})[view]()}
-applyLang();chips();go("path");
-if(!S.profile)onboarding();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+/* запуск приложения — в конце plus.js */
 </script>
+<script src="plus.js"></script>
 </body>
 </html>
