@@ -275,12 +275,12 @@ window.LEVELS_EN = [
  {s:4,t:"Summit",
   theory:"Look back: what do you do faster now? Pick 3 techniques to keep as habits and decide where to climb next.",
   bad:"I get it all",
-  good:"I've climbed all 30 steps of Claude Skill Hill. Help me sum up and suggest a plan for the next level.",
+  good:"I've climbed all 30 steps of 2045 Academy. Help me sum up and suggest a plan for the next level.",
   tasks:["Write down your 3 key techniques","Decide what to learn next"],
   prompt:"Help me sum up my learning and make a plan for next month.",
   mistakes:["Stopping practice","Not applying the skills at work"],
   quiz:["What should you do after the course?",["Practice every day","Forget it","Start over"],0],
-  more:"Tell your friends about Claude Skill Hill and climb together."}
+  more:"Tell your friends about 2045 Academy and climb together."}
  ]
 }
 ];

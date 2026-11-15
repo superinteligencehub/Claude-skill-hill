@@ -57,7 +57,7 @@ window.LEVELS_RU.push({
  {s:1,t:"Развитие навыков",theory:"Составьте карту навыков: базовый уровень для всех, продвинутый для чемпионов, разработка для технических ролей. Этот курс — готовая основа.",
   bad:"Одно обучение для всех",good:"Все проходят уровень 1, менеджеры — 2–3, разработчики — 4.",
   tasks:["Определите уровни для ролей","Составьте план обучения"],prompt:"Составь план обучения ИИ для ролей: …",
-  mistakes:["Один уровень на всех","Нет практики после обучения"],quiz:["Как строить обучение?",["По ролям и уровням","Одинаково всем","Без практики"],0],more:"Сертификаты Skill Hill помогут отслеживать прогресс."},
+  mistakes:["Один уровень на всех","Нет практики после обучения"],quiz:["Как строить обучение?",["По ролям и уровням","Одинаково всем","Без практики"],0],more:"Сертификаты 2045 Academy помогут отслеживать прогресс."},
  {s:2,t:"Пересборка процесса",theory:"Максимальный эффект — не ускорить старый процесс, а пересобрать его с учётом ИИ. Спросите: как бы мы делали это с нуля, если бы у нас был помощник?",
   bad:"То же самое, но быстрее",good:"Раньше: 5 этапов согласования. Теперь: ИИ готовит, один человек проверяет, клиент получает в тот же день.",
   tasks:["Выберите процесс","Нарисуйте «как есть» и «как может быть»"],prompt:"Пересобери процесс … с учётом ИИ: как есть и как может быть.",
@@ -128,7 +128,7 @@ window.LEVELS_RU.push({
   mistakes:["Нет канала привлечения","Игнорировать отзывы"],quiz:["Что делать после запуска?",["Собирать отзывы и улучшать","Ждать","Удалить продукт"],0],more:"Ведите публичный журнал изменений."},
  {s:4,t:"Вершина эксперта",theory:"Вы прошли 150 ступеней: от первого вопроса до своего продукта. Дальше — практика, обучение других и специализация в своей сфере.",
   bad:"Курс пройден, можно забыть",good:"Мой план: внедрить 3 процесса, обучить 5 коллег, запустить 1 продукт за полгода.",
-  tasks:["Напишите план на 6 месяцев","Поделитесь знаниями с другими"],prompt:"Я прошёл все 5 уровней Claude Skill Hill. Помоги составить мой план развития на полгода.",
+  tasks:["Напишите план на 6 месяцев","Поделитесь знаниями с другими"],prompt:"Я прошёл все 5 уровней 2045 Academy. Помоги составить мой план развития на полгода.",
   mistakes:["Перестать практиковаться","Держать знания при себе"],quiz:["Что делает эксперта экспертом?",["Постоянная практика и обучение других","Сертификат на стене","Знание одного трюка"],0],more:"Поделитесь своим сертификатом и пригласите друзей на холм."}
  ]
 });
@@ -190,7 +190,7 @@ window.LEVELS_EN.push({
  {s:1,t:"Growing skills",theory:"Draw a skills map: a baseline for everyone, advanced for champions, development for technical roles. This course is a ready-made foundation.",
   bad:"The same training for everyone",good:"Everyone does Level 1, managers 2–3, developers 4.",
   tasks:["Set levels for roles","Draw up a training plan"],prompt:"Make an AI training plan for these roles: …",
-  mistakes:["One level for all","No practice after training"],quiz:["How should training be built?",["By role and level","The same for all","Without practice"],0],more:"Skill Hill certificates help track progress."},
+  mistakes:["One level for all","No practice after training"],quiz:["How should training be built?",["By role and level","The same for all","Without practice"],0],more:"2045 Academy certificates help track progress."},
  {s:2,t:"Redesigning a process",theory:"The biggest gains don't come from speeding up the old process but from redesigning it with AI in mind. Ask: how would we do this from scratch if we had an assistant?",
   bad:"The same thing, only faster",good:"Before: 5 approval stages. Now: AI prepares, one person reviews, the client gets it the same day.",
   tasks:["Pick a process","Map “as is” and “could be”"],prompt:"Redesign process … with AI in mind: as is and could be.",
@@ -261,7 +261,7 @@ window.LEVELS_EN.push({
   mistakes:["No acquisition channel","Ignoring feedback"],quiz:["What do you do after launch?",["Gather feedback and improve","Wait","Delete the product"],0],more:"Keep a public changelog."},
  {s:4,t:"Expert summit",theory:"You've climbed 150 steps: from your first question to your own product. Next comes practice, teaching others and specialising in your field.",
   bad:"Course done, I can forget it",good:"My plan: adopt 3 processes, train 5 colleagues, launch 1 product in six months.",
-  tasks:["Write a 6-month plan","Share what you know with others"],prompt:"I've completed all 5 levels of Claude Skill Hill. Help me make a six-month development plan.",
+  tasks:["Write a 6-month plan","Share what you know with others"],prompt:"I've completed all 5 levels of 2045 Academy. Help me make a six-month development plan.",
   mistakes:["Stopping practice","Keeping knowledge to yourself"],quiz:["What makes an expert an expert?",["Constant practice and teaching others","A certificate on the wall","Knowing one trick"],0],more:"Share your certificate and invite friends up the hill."}
  ]
 });

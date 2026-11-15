@@ -1,5 +1,6 @@
 // Журнал обновлений курса. Новые записи добавляются В НАЧАЛО массива.
 window.UPDATES = [
+ {date:"2026-11-15", ru:"Новое название: 2045 Academy. Слоган — «Master the age of superintelligence». Ваш прогресс, XP и сертификаты сохранены.", en:"New name: 2045 Academy. Motto: “Master the age of superintelligence”. Your progress, XP and certificates are kept."},
  {date:"2026-11-13", ru:"Новое: опросник и личный план, тест уровня, свой проект с портфолио, кнопка «Открыть в Claude», озвучка уроков, игра «Поймай ошибку» и QR-подтверждение на сертификате.", en:"New: an intro quiz with a personal plan, a level test, your own project with a portfolio, an “Open in Claude” button, lesson audio, the “Spot the error” game and a QR verification code on the certificate."},
  {date:"2026-11-10", ru:"Новое: игра «Собери промпт», оценщик запроса, принципы 4D и специализации «Маркетинг», «Бухгалтерия и финансы», «Учителям».", en:"New: the “Build the prompt” game, a prompt grader, the 4D principles and tracks for Marketing, Accounting & Finance and Teachers."},
  {date:"2026-11-10", ru:"Курс расширен до 5 уровней: Основы, Мастерство запросов, Автоматизация и агенты, Разработчик, Эксперт. У каждого уровня свой сертификат.", en:"The course now has 5 levels: Basics, Prompt Mastery, Automation & Agents, Developer, Expert. Each level has its own certificate."},
