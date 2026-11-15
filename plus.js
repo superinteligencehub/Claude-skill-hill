@@ -1,4 +1,4 @@
-// Claude Skill Hill — дополнения: опросник и план, тест уровня, свой проект и портфолио,
+// 2045 Academy — дополнения: опросник и план, тест уровня, свой проект и портфолио,
 // практика в настоящем Claude, озвучка, игра «Поймай ошибку», страница подтверждения сертификата.
 // Подключается после основного скрипта в index.html и запускает приложение (см. конец файла).
 
@@ -39,8 +39,8 @@ T.ru.px={
   note:"По ссылке и QR-коду на сертификате открывается страница с вашим именем, пройденными уровнями и списком работ."},
  spot:{tab:"Поймай ошибку",h:"Поймай ошибку",p:"В ответе спрятана одна ошибка. Найдите предложение с ней. Так тренируется принцип «Различение».",round:(i,n)=>`Раунд ${i} из ${n}`,asked:"Вопрос",answer:"Ответ (учебный пример с одной ошибкой)",
   right:"Верно! +20 XP",rightAgain:"Верно!",wrong:"Здесь всё в порядке. Ищите дальше.",why:"В чём ошибка",tip:"Как проверять",next:"Следующий раунд",done:n=>`Найдено ошибок: ${n}`},
- proof:{eb:"Подтверждение сертификата",h:n=>n||"Участник",sub:"Пройденные уровни курса Claude Skill Hill",lv:(q,t)=>`${t} ступеней · тесты с первой попытки: ${q}`,proj:"Проект",works:"Работы, сохранённые в портфолио",noLv:"Пройденных уровней пока нет.",
-  note:"Страница собрана из данных на устройстве участника. Claude Skill Hill — независимый учебный курс, не официальная сертификация Anthropic.",go:"Открыть курс",bad:"Ссылка повреждена или неполная."},
+ proof:{eb:"Подтверждение сертификата",h:n=>n||"Участник",sub:"Пройденные уровни курса 2045 Academy",lv:(q,t)=>`${t} ступеней · тесты с первой попытки: ${q}`,proj:"Проект",works:"Работы, сохранённые в портфолио",noLv:"Пройденных уровней пока нет.",
+  note:"Страница собрана из данных на устройстве участника. 2045 Academy — независимый учебный курс, не официальная сертификация Anthropic.",go:"Открыть курс",bad:"Ссылка повреждена или неполная."},
  scan:"ПРОВЕРИТЬ"
 };
 T.en.px={
@@ -79,8 +79,8 @@ T.en.px={
   note:"The link and the QR code on your certificate open a page with your name, completed levels and list of works."},
  spot:{tab:"Spot the error",h:"Spot the error",p:"One error is hidden in the answer. Find the sentence that contains it. This trains the “Discernment” principle.",round:(i,n)=>`Round ${i} of ${n}`,asked:"Question",answer:"Answer (a teaching example with one error)",
   right:"Correct! +20 XP",rightAgain:"Correct!",wrong:"This one is fine. Keep looking.",why:"What’s wrong",tip:"How to check",next:"Next round",done:n=>`Errors found: ${n}`},
- proof:{eb:"Certificate verification",h:n=>n||"Participant",sub:"Completed levels of Claude Skill Hill",lv:(q,t)=>`${t} steps · quizzes passed first try: ${q}`,proj:"Project",works:"Works saved to the portfolio",noLv:"No completed levels yet.",
-  note:"This page is built from data on the participant’s device. Claude Skill Hill is an independent course, not an official Anthropic certification.",go:"Open the course",bad:"The link is damaged or incomplete."},
+ proof:{eb:"Certificate verification",h:n=>n||"Participant",sub:"Completed levels of 2045 Academy",lv:(q,t)=>`${t} steps · quizzes passed first try: ${q}`,proj:"Project",works:"Works saved to the portfolio",noLv:"No completed levels yet.",
+  note:"This page is built from data on the participant’s device. 2045 Academy is an independent course, not an official Anthropic certification.",go:"Open the course",bad:"The link is damaged or incomplete."},
  scan:"VERIFY"
 };
 T.ru.pr=[...T.ru.pr,T.ru.px.spot.tab];T.en.pr=[...T.en.pr,T.en.px.spot.tab];
@@ -129,7 +129,7 @@ function renderProj(){const box=$("#proj");if(!box)return;const P=px().proj,p=S.
   :`<span class="eyebrow">${P.h}</span><p style="margin:0">${P.none}</p><div><button class="btn" id="pjEdit">${P.add}</button></div>`;
  $("#pjEdit").onclick=()=>editProject(renderPath)}
 function editProject(after){const P=px(),goal=(S.profile&&S.profile.goal)||"work";
- const s=sheet(`<div class="hd"><span class="eyebrow">Claude Skill Hill</span><button class="x">×</button></div><h3>${P.proj.sheetH}</h3><p class="lead" style="margin:-4px 0 16px">${P.proj.sheetP}</p>
+ const s=sheet(`<div class="hd"><span class="eyebrow">2045 Academy</span><button class="x">×</button></div><h3>${P.proj.sheetH}</h3><p class="lead" style="margin:-4px 0 16px">${P.proj.sheetP}</p>
   <div class="form"><input type="text" id="pjIn" maxlength="80" placeholder="${P.projPh}" value="${esc((S.profile&&S.profile.project)||"")}">
   <div class="ideas">${P.ideas[goal].map(z=>`<button class="tab">${esc(z)}</button>`).join("")}</div></div>
   <div class="actions"><button class="btn" id="pjOk">${P.proj.save}</button></div>`);
@@ -138,7 +138,7 @@ function editProject(after){const P=px(),goal=(S.profile&&S.profile.goal)||"work
  $("#pjOk").onclick=()=>{S.profile=S.profile||{goal:"work",lvl:"new",mins:15,name:""};S.profile.project=$("#pjIn").value.trim();save();close();after&&after()}}
 
 /* ---------- опросник ---------- */
-function pickLang(then){const s=sheet(`<div class="hd"><span class="eyebrow">Claude Skill Hill</span></div><h3>Выберите язык<br><span style="color:var(--muted)">Choose your language</span></h3>
+function pickLang(then){const s=sheet(`<div class="hd"><span class="eyebrow">2045 Academy</span></div><h3>Выберите язык<br><span style="color:var(--muted)">Choose your language</span></h3>
   <div class="choices" style="margin-top:6px"><button class="choice" data-l="ru"><b>Русский</b><span>курс на русском</span></button><button class="choice" data-l="en"><b>English</b><span>the course in English</span></button></div>`);
  s.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{S.lang=b.dataset.l;S.langPicked=true;save();applyLang();then()})}
 function onboarding(){if(!S.profile&&!S.langPicked){pickLang(onboarding);return}
@@ -166,7 +166,7 @@ function onboarding(){if(!S.profile&&!S.langPicked){pickLang(onboarding);return}
   const trk=L().find(x=>x.id===st.field),total=L().reduce((a,x)=>a+x.steps.length,0),li={new:0,some:1,pro:2}[st.lvl]||0;
   const now=new Date().toLocaleDateString(S.lang==="en"?"en-GB":"ru-RU",{day:"numeric",month:"long"});
   const rows=[t().paceN[st.mins],pl.start[li],trk?trk.name:pl.noTrack,st.project||pl.noProj];
-  const s=sheet(`<div class="hd"><span class="eyebrow">Claude Skill Hill</span></div><h3>${pl.h}${st.name?", "+esc(st.name.split(" ")[0]):""}</h3><p class="lead" style="margin:-4px 0 14px">${pl.sub}</p>
+  const s=sheet(`<div class="hd"><span class="eyebrow">2045 Academy</span></div><h3>${pl.h}${st.name?", "+esc(st.name.split(" ")[0]):""}</h3><p class="lead" style="margin:-4px 0 14px">${pl.sub}</p>
    <div class="card planchart"><svg viewBox="-16 -30 352 150" role="img" aria-label="${pl.now} ${now} → ${pl.fin} ${fin}">
     <path d="M0 88 C60 86 90 70 130 52 S220 12 320 6" fill="none" stroke="var(--done)" stroke-width="7" stroke-linecap="round"/>
     <line x1="0" y1="88" x2="0" y2="104" stroke="var(--accent)" stroke-dasharray="3 3"/><line x1="320" y1="6" x2="320" y2="104" stroke="var(--done)" stroke-dasharray="3 3"/>
@@ -249,8 +249,8 @@ function renderFolio(){const box=$("#folio");if(!box)return;const F=px().folio,W
   ${W.length?`<div style="display:flex;flex-direction:column;gap:10px">${W.map(o=>`<div><b>${esc(o.x.t)}</b> <span style="color:var(--muted);font-size:13px">· ${esc(o.Lv.name)} · ${esc(o.w.d)}</span><div class="excerpt">${esc(o.w.t.slice(0,220))}${o.w.t.length>220?"…":""}</div></div>`).join("")}</div>`:`<p style="margin:0;color:var(--muted)">${F.empty}</p>`}
   <div class="row2">${W.length?`<button class="btn ghost" id="foDl">${F.dl}</button>`:""}<button class="btn ghost" id="foLink">${F.link}</button></div>
   <p style="margin:0;color:var(--muted);font-size:13px">${F.note}</p>`;
- if(W.length)$("#foDl").onclick=()=>{const txt=["Claude Skill Hill — "+F.h,(S.profile&&S.profile.name)||"",p||"",""].concat(W.map(o=>`## ${o.x.t} (${o.Lv.name}, ${o.w.d})\n${o.w.t}\n`)).join("\n");
-  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([txt],{type:"text/plain;charset=utf-8"}));a.download="skill-hill-portfolio.txt";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000)};
+ if(W.length)$("#foDl").onclick=()=>{const txt=["2045 Academy — "+F.h,(S.profile&&S.profile.name)||"",p||"",""].concat(W.map(o=>`## ${o.x.t} (${o.Lv.name}, ${o.w.d})\n${o.w.t}\n`)).join("\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([txt],{type:"text/plain;charset=utf-8"}));a.download="2045-academy-portfolio.txt";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000)};
  $("#foLink").onclick=()=>{const u=proofLink(0);(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>toast(F.linkOk),()=>{const i=document.createElement("input");i.type="text";i.readOnly=true;i.value=u;box.appendChild(i);i.select()})}}
 /* QR на сертификате */
 function drawQR(x,ok){if(!ok||!window.qrMatrix)return;let m=null;
