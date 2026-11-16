@@ -1,5 +1,6 @@
 // Журнал обновлений курса. Новые записи добавляются В НАЧАЛО массива.
 window.UPDATES = [
+ {date:"2026-11-16", ru:"Новая иконка приложения 2045 Academy.", en:"New 2045 Academy app icon."},
  {date:"2026-11-16", ru:"Курс теперь про ИИ в целом: навыки подходят для Claude, ChatGPT, Gemini и других. Практикуемся на Claude, а его особые функции (Claude Code, API, навыки, агенты) остались с названиями.", en:"The course is now about AI in general: the skills work with Claude, ChatGPT, Gemini and others. We practise on Claude, and its specific features (Claude Code, the API, skills, agents) keep their names."},
  {date:"2026-11-16", ru:"Уровень 3, ступень «Агент в команде»: добавлено про Claude Meetings (бета) — Claude в звонках Google Meet. Уровень 4, ступень «Выбор модели»: добавлена новая модель Claude Fable 5.2.", en:"Level 3, “An agent in your team”: added Claude Meetings (beta), Claude in Google Meet calls. Level 4, “Choosing a model”: added the new Claude Fable 5.2 model."},
  {date:"2026-11-15", ru:"Новое название: 2045 Academy. Слоган — «Master the age of superintelligence». Ваш прогресс, XP и сертификаты сохранены.", en:"New name: 2045 Academy. Motto: “Master the age of superintelligence”. Your progress, XP and certificates are kept."},
